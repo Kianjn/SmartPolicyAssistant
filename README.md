@@ -47,7 +47,7 @@ SmartPolicyAssistant/
 │   │   └── policy_qa.py
 │   ├── core/          # Core chat functionality
 │   │   ├── chat_with_policy.py
-│   │   └── .env       # Stores the Google API Key (!! IMPORTANT: Add .env to .gitignore !!)
+│   │   └── .env       # Stores the Google API Key 
 │   └── ui/           # Streamlit User Interface
 │       └── ui_chat.py
 ├── models/          # Directory for storing FAISS index files
