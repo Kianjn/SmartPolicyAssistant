@@ -9,15 +9,16 @@ A GenAI-powered assistant using RAG to analyze, summarize, and compare EU Nation
 
 ## 📋 Overview
 
-This capstone project demonstrates a GenAI-powered assistant designed to help users understand, analyze, and compare lengthy and complex energy policy documents, specifically focusing on the National Energy and Climate Plans (NECPs) of EU member states. It leverages Retrieval-Augmented Generation (RAG) to provide accurate answers based on the source documents.
+This project demonstrates a GenAI-powered assistant designed to help users understand, analyze, and compare lengthy and complex energy policy documents, specifically focusing on the National Energy and Climate Plans (NECPs) of EU member states. It leverages Retrieval-Augmented Generation (RAG) and structured data analysis to provide accurate answers based on the source documents.
 
 ## ✨ Features
 
-*   **📄 Document Ingestion:** Processes raw text extracted from NECP PDF documents
-*   **🔍 Vector Indexing:** Creates a searchable vector index (using FAISS) from document chunks based on semantic similarity using Google's embedding models
-*   **🤖 Retrieval-Augmented Generation (RAG):** Finds relevant document sections based on user queries
-*   **💡 Generative Q&A:** Uses Google Gemini models via LangChain to generate answers grounded in the retrieved context
-*   **🌍 Cross-Document Comparison:** Capable of answering questions that require synthesizing information from multiple documents (e.g., comparing targets between countries)
+*   **📄 Document Processing:** Processes and extracts structured data from NECP documents
+*   **📊 Data Aggregation:** Combines and normalizes data from multiple sources into a unified format
+*   **🤖 LLM-Powered Query Parsing:** Uses Google Gemini models to understand and parse natural language queries
+*   **🔍 Structured Data Retrieval:** Efficiently retrieves relevant data based on parsed queries
+*   **💡 Generative Q&A:** Uses Google Gemini models via LangChain to generate answers grounded in the retrieved data
+*   **🌍 Cross-Document Comparison:** Capable of answering questions that require synthesizing information from multiple documents
 *   **🖥️ Interactive UI:** Provides a user-friendly chat interface built with Streamlit
 
 ## 🛠️ Technology Stack
@@ -26,8 +27,7 @@ This capstone project demonstrates a GenAI-powered assistant designed to help us
 *   **Core AI/ML:** 
     * LangChain
     * Google Generative AI (Gemini API)
-    * Sentence Transformers (via LangChain)
-*   **Vector Store:** FAISS (Facebook AI Similarity Search)
+    * Pandas for data manipulation
 *   **Web Framework:** Streamlit
 *   **Environment:** Conda
 *   **Other:** python-dotenv
@@ -37,25 +37,20 @@ This capstone project demonstrates a GenAI-powered assistant designed to help us
 ```plaintext
 SmartPolicyAssistant/
 ├── data/
-│   ├── input/           # Directory for source PDF files
-│   └── processed/       # Directory for processed text files
+│   ├── input/           # Directory for source documents
+│   └── processed/       # Directory for processed and aggregated data
 ├── src/
-│   ├── preprocessing/   # Scripts for PDF processing and summarization
+│   ├── preprocessing/   # Scripts for data processing and aggregation
 │   │   ├── pdf_to_txt.py
 │   │   └── summarize.py
-│   ├── indexing/       # Scripts for creating and managing FAISS index
+│   ├── indexing/       # Scripts for query processing and data retrieval
 │   │   └── policy_qa.py
-│   ├── core/          # Core chat functionality
-│   │   ├── chat_with_policy.py
-│   │   └── .env       # Stores the Google API Key 
-│   └── ui/           # Streamlit User Interface
+│   └── ui/            # Streamlit User Interface
 │       └── ui_chat.py
-├── models/          # Directory for storing FAISS index files
-│   ├── index.faiss
-│   └── index.pkl
-├── environment.yml  # Conda environment definition file
-├── LICENSE         # Contains the MIT License text
-└── README.md      # This file
+├── models/            # Directory for storing model-related files
+├── .env              # Environment variables (API keys)
+├── LICENSE           # Contains the MIT License text
+└── README.md        # This file
 ```
 
 ## 🚀 Quick Start
@@ -75,34 +70,25 @@ SmartPolicyAssistant/
 
 2. **Set Up Environment**
    ```bash
-   # Using environment.yml
-   conda env create -f environment.yml
-   conda activate policy_env
-   
-   # OR Manual Installation
+   # Create and activate conda environment
    conda create --name policy_env python=3.10 -y
    conda activate policy_env
-   conda install pytorch cpuonly faiss-cpu -c pytorch -c conda-forge -y
+   
+   # Install required packages
    pip install --upgrade pip
-   pip install langchain langchain-google-genai google-generativeai langchain-community sentence-transformers python-dotenv streamlit faiss-cpu
+   pip install langchain langchain-google-genai google-generativeai langchain-community python-dotenv streamlit pandas
    ```
 
 3. **Configure API Key**
    ```bash
-   # Create .env file in src/core/
-   echo "GOOGLE_API_KEY=your_api_key_here" > src/core/.env
+   # Create .env file in project root
+   echo "GOOGLE_API_KEY=your_api_key_here" > .env
    ```
 
 4. **Prepare Data**
-   - Place NECP PDFs in `data/input/`
-   - Run preprocessing scripts to convert PDFs to text
+   - Place source documents in `data/input/`
+   - Run preprocessing scripts to process and aggregate data
    - Processed files will be stored in `data/processed/`
-
-5. **Create FAISS Index**
-   ```bash
-   cd src/indexing
-   python policy_qa.py
-   ```
 
 ## 💬 Usage
 
@@ -115,25 +101,25 @@ Access the interface at `http://localhost:8501`
 
 ### Command Line Interface
 ```bash
-cd src/core
-python chat_with_policy.py
+cd src/indexing
+python policy_qa.py
 ```
 
 ### Example Questions
 
 *   "What is Germany's target for renewable energy share in 2030?"
-*   "Summarize Italy's main policies for the transport sector."
 *   "Compare the greenhouse gas emission reduction targets of France and Spain for 2030."
-*   "What measures does Austria mention regarding energy efficiency in buildings?"
+*   "What are the energy efficiency targets for buildings in Austria?"
+*   "List all countries with renewable energy targets above 40% for 2030."
 
 ## 🔮 Future Improvements
 
-*   **Metadata Filtering:** Enhance retrieval by filtering based on country metadata attached to chunks
-*   **Advanced RAG Techniques:** Explore Multi-Query Retriever, MMR, Parent Document Retriever, or HyDE
-*   **Enhanced Comparison Logic:** Implement more sophisticated prompting for comparison tasks
-*   **Source Highlighting:** Show which parts of source documents were used in answers
+*   **Enhanced Data Processing:** Improve data extraction and normalization from source documents
+*   **Advanced Query Understanding:** Implement more sophisticated query parsing and intent recognition
+*   **Data Visualization:** Add interactive charts and graphs for data comparison
+*   **Multi-language Support:** Enable querying in multiple languages
 *   **Evaluation Framework:** Implement metrics for response quality and accuracy
-*   **Integrated Summarization:** Add summarization capability directly into the workflow/UI
+*   **Real-time Updates:** Add capability to process and incorporate new data sources
 
 ## 📄 License
 
@@ -142,4 +128,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgements
 
 *   Data Sources: European Commission / Member State NECP documents
-*   Key Libraries: LangChain, Streamlit, FAISS, Google Generative AI
+*   Key Libraries: LangChain, Streamlit, Google Generative AI, Pandas
