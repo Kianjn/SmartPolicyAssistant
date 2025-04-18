@@ -68,6 +68,7 @@ SmartPolicyAssistant/
 ├── requirements.txt     # List of Python dependencies (Consider adding this)
 ├── LICENSE              # Project License (MIT)
 └── README.md            # You are here!
+```
 
 *(**Note:** Ensure your `.env` file is included in your `.gitignore` to prevent accidental key exposure! Consider adding a `requirements.txt` for pip users.)*
 
